@@ -1,0 +1,36 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ask Gemini AI</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="container">
+    <h1>✨ Ask Gemini AI</h1>
+    <p>Ask a question and get an AI-generated answer.</p>
+
+    <form id="question-form">
+      <label for="question">Enter your question</label>
+      <textarea
+        id="question"
+        placeholder="Example: What is JavaScript?"
+        required
+      ></textarea>
+
+      <button type="submit">Ask Gemini</button>
+    </form>
+
+    <div id="result" hidden>
+      <h2>Answer</h2>
+      <p id="answer"></p>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
