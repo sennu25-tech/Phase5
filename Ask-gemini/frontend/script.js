@@ -5,49 +5,61 @@ const result = document.getElementById("result");
 const resultTitle = document.getElementById("result-title");
 const answer = document.getElementById("answer");
 
-form.addEventListener("submit", async (event) => {
-  event.preventDefault();
+console.log("Form:", form);
+console.log("Question:", questionInput);
+console.log("Button:", askButton);
+console.log("Result:", result);
+console.log("Title:", resultTitle);
+console.log("Answer:", answer);
 
-  const question = questionInput.value.trim();
+if (!form || !questionInput || !askButton || !result || !resultTitle || !answer) {
+  console.error("One or more HTML elements are missing. Check the IDs in index.html.");
+} else {
 
-  if (!question) {
-    result.hidden = false;
-    resultTitle.textContent = "Error";
-    answer.textContent = "Please enter a question.";
-    return;
-  }
+  form.addEventListener("submit", async (event) => {
+    event.preventDefault();
 
-  result.hidden = false;
-  resultTitle.textContent = "Thinking...";
-  answer.textContent = "Please wait for Gemini's answer.";
+    const question = questionInput.value.trim();
 
-  askButton.disabled = true;
-  askButton.textContent = "Please wait...";
-
-  try {
-    const response = await fetch("/api/ask", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({ question })
-    });
-
-    const data = await response.json();
-
-    if (!response.ok) {
-      throw new Error(data.error || "Something went wrong.");
+    if (!question) {
+      result.hidden = false;
+      resultTitle.textContent = "Error";
+      answer.textContent = "Please enter a question.";
+      return;
     }
 
-    resultTitle.textContent = "Gemini's Answer";
-    answer.textContent = data.answer;
+    result.hidden = false;
+    resultTitle.textContent = "Thinking...";
+    answer.textContent = "Please wait for Gemini's answer.";
 
-  } catch (error) {
-    resultTitle.textContent = "Error";
-    answer.textContent = error.message;
+    askButton.disabled = true;
+    askButton.textContent = "Please wait...";
 
-  } finally {
-    askButton.disabled = false;
-    askButton.textContent = "Ask Gemini";
-  }
-});
+    try {
+      const response = await fetch("/api/ask", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ question })
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || "Something went wrong.");
+      }
+
+      resultTitle.textContent = "Gemini's Answer";
+      answer.textContent = data.answer;
+
+    } catch (error) {
+      resultTitle.textContent = "Error";
+      answer.textContent = error.message;
+
+    } finally {
+      askButton.disabled = false;
+      askButton.textContent = "Ask Gemini";
+    }
+  });
+}
